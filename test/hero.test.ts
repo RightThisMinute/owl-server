@@ -57,3 +57,70 @@ describe('GET api/v1/heroes/:id', () => {
 })
 
 
+describe('query { heroes }', () => {
+
+	it('responds with a JSON array', () => {
+		return chai.request(app)
+		.post('/graphql')
+		.set('content-type', 'application/json')
+		.send({ query: 'query { heroes { id } }' })
+		.then(res => {
+			expect(res.status).to.equal(200)
+			expect(res).to.be.json
+			expect(res.body).to.be.an('object')
+				.and.have.nested.property('data.heroes')
+			expect(res.body.data.heroes).to.be.an('array').of.length(5)
+		})
+	})
+
+	it('should include Spider-Man', () => {
+		return chai.request(app)
+		.post('/graphql')
+		.set('content-type', 'application/json')
+		.send({ query: 'query { heroes { id, name, powers } }' })
+		.then(res => {
+			let Spidey = res.body.data.heroes.find(hero => hero.name === 'Spider-Man')
+			expect(Spidey).to.exist
+				.and.to.have.all.keys(['id', 'name', 'powers'])
+				.and.not.have.any.keys([
+					'aliases', 'occupation', 'gender', 'height', 'hair', 'eyes'
+				])
+		})
+	})
+
+})
+
+
+describe('query { hero(:id) }', () => {
+
+	it('responds with JSON object', () => {
+		return chai.request(app)
+		.post('/graphql')
+		.set('content-type', 'application/json')
+		.send({ query: 'query { hero(id: 4) { id } }' })
+		.then(res => {
+			expect(res.status).to.equal(200)
+			expect(res).to.be.json
+			expect(res.body).to.be.an('object')
+				.and.have.nested.property('data.hero')
+			expect(res.body.data.hero).to.be.an('object')
+		})
+	})
+
+	it('should return Iron Man', () => {
+		return chai.request(app)
+		.post('/graphql')
+		.set('content-type', 'application/json')
+		.send({ query: 'query { hero(id: 4) { id, name, powers } }' })
+		.then(res => {
+			expect(res.body.data.hero)
+				.to.have.all.keys(['id', 'name', 'powers'])
+				.and.not.have.any.keys([
+					'aliases', 'occupation', 'gender', 'height', 'hair', 'eyes'
+				])
+			expect(res.body.data.hero.name).to.equal('Iron Man')
+		})
+	})
+
+})
+

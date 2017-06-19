@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
+const Hero_1 = require("./routes/Hero");
+const graphql_1 = require("./graphql");
 // Creates and configures an ExpressJS web server.
 class App {
     // Run configuration methods on Express instance
@@ -30,6 +32,8 @@ class App {
             });
         });
         this.express.use('/', router);
+        this.express.use('/api/v1/heroes', Hero_1.default);
+        this.express.use('/graphql', graphql_1.default);
     }
 }
 exports.default = new App().express;
