@@ -5,10 +5,12 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const Hero_1 = require("./routes/Hero");
 const graphql_1 = require("./graphql");
+const Store_1 = require("./Store");
 // Creates and configures an ExpressJS web server.
 class App {
     // Run configuration methods on Express instance
     constructor() {
+        this.store = Store_1.store;
         this.express = express();
         this.middleware();
         this.routes();

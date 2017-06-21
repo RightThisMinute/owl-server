@@ -50,11 +50,9 @@ class Hero {
     }
 }
 const root = {
-    hello: () => {
-        return 'Hello, World!';
-    },
+    hello: () => 'Hello, World!',
     heroes: () => Hero.getAll(),
-    hero: ({ id }) => Hero.getBy(id)
+    hero: ({ id }) => Hero.getBy(id),
 };
 exports.default = graphqlHTTP({
     schema,

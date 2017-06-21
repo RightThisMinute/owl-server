@@ -1,6 +1,7 @@
 
 import * as http from 'http'
-import * as debug from 'debug'
+import * as createDebug from 'debug'
+const debug = createDebug('index')
 
 import App from './App'
 

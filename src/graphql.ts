@@ -2,6 +2,7 @@
 import * as graphqlHTTP from 'express-graphql'
 import {buildSchema} from 'graphql'
 import { Heroes } from './routes/Hero'
+import { store } from './Store'
 
 const schema = buildSchema(`
 	type Height {
@@ -70,12 +71,10 @@ class Hero {
 
 
 const root = {
-	hello: () => {
-		return 'Hello, World!'
-	},
+	hello: () => 'Hello, World!',
 
 	heroes: () => Hero.getAll(),
-	hero: ({id}) => Hero.getBy(id)
+	hero: ({id}) => Hero.getBy(id),
 }
 
 export default graphqlHTTP({
