@@ -4,6 +4,9 @@ const debug = createDebug('Store')
 import * as Sequelize from 'sequelize'
 
 import { channelStore } from './store/Channel'
+import { videoStore } from './store/Video'
+import { snapshotStore } from './store/Snapshot'
+
 
 
 /**
@@ -27,17 +30,11 @@ export abstract class Store {
 		debug('Initialized.')
 	}
 
-	async syncModels(): Promise<any> {
-		let promises: PromiseLike<any>[] = []
+	async syncModels(force = false): Promise<any> {
+		const stores = [channelStore, videoStore, snapshotStore]
 
-		promises.push(channelStore.syncModel(this.connection))
-
-		try {
-			await promises.forEach(async promise => await promise)
-		}
-		catch (error) {
-
-		}
+		for (let sx = 0; sx < stores.length; sx++)
+			await stores[sx].syncModel(this.connection, force)
 	}
 }
 

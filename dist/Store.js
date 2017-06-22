@@ -12,6 +12,8 @@ const createDebug = require("debug");
 const debug = createDebug('Store');
 const Sequelize = require("sequelize");
 const Channel_1 = require("./store/Channel");
+const Video_1 = require("./store/Video");
+const Snapshot_1 = require("./store/Snapshot");
 /**
  * Defined as abstract to allow exporting without allowing instantiation.
  */
@@ -28,15 +30,11 @@ class Store {
         });
         debug('Initialized.');
     }
-    syncModels() {
+    syncModels(force = false) {
         return __awaiter(this, void 0, void 0, function* () {
-            let promises = [];
-            promises.push(Channel_1.channelStore.syncModel(this.connection));
-            try {
-                yield promises.forEach((promise) => __awaiter(this, void 0, void 0, function* () { return yield promise; }));
-            }
-            catch (error) {
-            }
+            const stores = [Channel_1.channelStore, Video_1.videoStore, Snapshot_1.snapshotStore];
+            for (let sx = 0; sx < stores.length; sx++)
+                yield stores[sx].syncModel(this.connection, force);
         });
     }
 }
