@@ -4,19 +4,24 @@ import * as createDebug from 'debug'
 const debug = createDebug('index')
 
 import API from './API'
+import { config } from './Config'
 import { store } from './Store'
 
-const port = normalizePort(process.env.PORT || 3000)
+const port = normalizePort(process.env.PORT || config.api.port)
 API.set('port', port)
 const server = http.createServer(API)
 
+
 async function main(): Promise<any> {
-	await store.initialize('localhost', 5432, 'owl')
+	await store.initialize(
+		config.database.host, config.database.port, config.database.name
+	)
 
 	server.listen(port)
 	server.on('error', onError)
 	server.on('listening', onListening)
 }
+
 
 function normalizePort(val: number|string): number|string|boolean {
 	let port: number = (typeof val === 'string') ? parseInt(val, 10) : val

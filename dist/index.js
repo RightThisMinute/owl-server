@@ -12,13 +12,14 @@ const http = require("http");
 const createDebug = require("debug");
 const debug = createDebug('index');
 const API_1 = require("./API");
+const Config_1 = require("./Config");
 const Store_1 = require("./Store");
-const port = normalizePort(process.env.PORT || 3000);
+const port = normalizePort(process.env.PORT || Config_1.config.api.port);
 API_1.default.set('port', port);
 const server = http.createServer(API_1.default);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield Store_1.store.initialize('localhost', 5432, 'owl');
+        yield Store_1.store.initialize(Config_1.config.database.host, Config_1.config.database.port, Config_1.config.database.name);
         server.listen(port);
         server.on('error', onError);
         server.on('listening', onListening);

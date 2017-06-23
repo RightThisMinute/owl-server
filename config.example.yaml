@@ -1,0 +1,16 @@
+
+api:
+  port: 3000
+
+database:
+  host: localhost
+  port: 5432
+  name: owl # Database name
+
+testDatabase: # Optional
+  host: localhost
+  port: 5432
+  name: owl.test
+
+youtube:
+  key: API KEY HERE

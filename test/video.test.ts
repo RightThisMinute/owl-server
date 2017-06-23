@@ -3,6 +3,7 @@ import * as chai from 'chai'
 import chaiHttp = require('chai-http')
 
 import api from '../src/API'
+import { config } from '../src/Config'
 import { store } from '../src/Store'
 import { videoStore } from '../src/store/Video'
 
@@ -10,7 +11,7 @@ chai.use(chaiHttp)
 const expect = chai.expect
 
 const storeInit = store.initialize(
-	'localhost', 5432, 'owl.test'
+	config.database.host, config.database.port, config.database.name
 )
 
 describe('mutation { setActiveVideoIDs(:ids) }', () => {

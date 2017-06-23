@@ -1,4 +1,7 @@
 
+config.*yaml
+!config.example.yaml
+
 ## From https://github.com/github/gitignore/blob/master/Global/JetBrains
 .gitignore ##
 
