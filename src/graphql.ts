@@ -31,7 +31,7 @@ const schema = buildSchema(`
 	}
 
 	type Mutation {
-		setActiveVideoIDs(ids: [String]!): [String]!
+		setActiveVideos(ids: [String]!): [String]!
 		hello: String!
 	}
 `)
@@ -83,7 +83,7 @@ const root = {
 	heroes: () => Hero.getAll(),
 	hero: ({id}) => Hero.getBy(id),
 
-	setActiveVideoIDs: async ({ids}) => {
+	setActiveVideos: async ({ids}) => {
 		await videoStore.setActive(ids)
 		return await videoStore.getActiveIDs()
 	}

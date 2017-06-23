@@ -38,7 +38,7 @@ const schema = graphql_1.buildSchema(`
 	}
 
 	type Mutation {
-		setActiveVideoIDs(ids: [String]!): [String]!
+		setActiveVideos(ids: [String]!): [String]!
 		hello: String!
 	}
 `);
@@ -68,7 +68,7 @@ const root = {
     hello: () => 'Hello, World!',
     heroes: () => Hero.getAll(),
     hero: ({ id }) => Hero.getBy(id),
-    setActiveVideoIDs: ({ ids }) => __awaiter(this, void 0, void 0, function* () {
+    setActiveVideos: ({ ids }) => __awaiter(this, void 0, void 0, function* () {
         yield Video_1.videoStore.setActive(ids);
         return yield Video_1.videoStore.getActiveIDs();
     })

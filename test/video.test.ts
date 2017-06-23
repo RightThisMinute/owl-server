@@ -32,8 +32,8 @@ describe('mutation { setActiveVideoIDs(:ids) }', () => {
 			.set('content-type', 'application/json')
 			.send({
 				query: `
-					mutation SetActiveVideoIDs($ids: [String]!) {
-						setActiveVideoIDs(ids: $ids)
+					mutation SetActiveVideos($ids: [String]!) {
+						setActiveVideos(ids: $ids)
 					}
 				`,
 				variables: { ids: ids }
@@ -42,8 +42,8 @@ describe('mutation { setActiveVideoIDs(:ids) }', () => {
 		expect(res.status).to.equal(200)
 		expect(res).to.be.json
 		expect(res.body).to.be.an('object')
-			.and.have.nested.property('data.setActiveVideoIDs')
-		expect(res.body.data.setActiveVideoIDs)
+			.and.have.nested.property('data.setActiveVideos')
+		expect(res.body.data.setActiveVideos)
 			.to.be.an('array').of.length(ids.length)
 			.and.to.have.members(ids)
 	})
