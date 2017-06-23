@@ -18,17 +18,24 @@ const Snapshot_1 = require("./store/Snapshot");
  * Defined as abstract to allow exporting without allowing instantiation.
  */
 class Store {
-    constructor() {
-        this.connection = new Sequelize('postgres://localhost:5432/owl', {
-            define: {
-                underscored: true
-            }
+    get connection() { return this._connection; }
+    initialize(host, port, database) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = `postgres://${host}:${port}/${database}`;
+            this._connection = new Sequelize(url, {
+                define: {
+                    underscored: true
+                }
+            });
+            yield this.connection.authenticate().catch(reason => {
+                console.error(`Failed connecting to database with ${url}.`, reason);
+            });
+            debug('Syncing models...');
+            yield this.syncModels().catch(reason => {
+                console.error('Failed syncing models.', reason);
+            });
+            debug('Initialized.');
         });
-        this.syncModels()
-            .catch(reason => {
-            console.error('Failed syncing models.', reason);
-        });
-        debug('Initialized.');
     }
     syncModels(force = false) {
         return __awaiter(this, void 0, void 0, function* () {

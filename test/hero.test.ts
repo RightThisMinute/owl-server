@@ -3,7 +3,8 @@ import * as mocha from 'mocha'
 import * as chai from 'chai'
 import chaiHttp = require('chai-http')
 
-import app from '../src/App'
+import api from '../src/API'
+
 
 chai.use(chaiHttp)
 const expect = chai.expect
@@ -11,18 +12,16 @@ const expect = chai.expect
 
 describe('GET api/v1/heroes', () => {
 
-	it('responds with JSON array', () => {
-		return chai.request(app).get('/api/v1/heroes')
-		.then(res => {
-			expect(res.status).to.equal(200)
-			expect(res).to.be.json
-			expect(res.body).to.be.an('array')
-			expect(res.body).to.have.length(5)
-		})
+	it('responds with JSON array', async () => {
+		const res = await chai.request(api).get('/api/v1/heroes')
+		expect(res.status).to.equal(200)
+		expect(res).to.be.json
+		expect(res.body).to.be.an('array')
+		expect(res.body).to.have.length(5)
 	})
 
 	it('should include Wovlerine', () => {
-		return chai.request(app).get('/api/v1/heroes')
+		return chai.request(api).get('/api/v1/heroes')
 		.then(res => {
 			let Wolverine = res.body.find(hero => hero.name === 'Wolverine')
 			expect(Wolverine).to.exist
@@ -39,7 +38,7 @@ describe('GET api/v1/heroes', () => {
 describe('GET api/v1/heroes/:id', () => {
 
 	it('responds with single JSON object', () => {
-		return chai.request(app).get('/api/v1/heroes/1')
+		return chai.request(api).get('/api/v1/heroes/1')
 		.then(res => {
 			expect(res.status).to.equal(200)
 			expect(res).to.be.json
@@ -48,7 +47,7 @@ describe('GET api/v1/heroes/:id', () => {
 	})
 
 	it('should return Luke Cage', () => {
-		return chai.request(app).get('/api/v1/heroes/1')
+		return chai.request(api).get('/api/v1/heroes/1')
 		.then(res => {
 			expect(res.body.hero.name).to.equal('Luke Cage')
 		})
@@ -60,7 +59,7 @@ describe('GET api/v1/heroes/:id', () => {
 describe('query { heroes }', () => {
 
 	it('responds with a JSON array', () => {
-		return chai.request(app)
+		return chai.request(api)
 		.post('/graphql')
 		.set('content-type', 'application/json')
 		.send({ query: 'query { heroes { id } }' })
@@ -74,7 +73,7 @@ describe('query { heroes }', () => {
 	})
 
 	it('should include Spider-Man', () => {
-		return chai.request(app)
+		return chai.request(api)
 		.post('/graphql')
 		.set('content-type', 'application/json')
 		.send({ query: 'query { heroes { id, name, powers } }' })
@@ -94,7 +93,7 @@ describe('query { heroes }', () => {
 describe('query { hero(:id) }', () => {
 
 	it('responds with JSON object', () => {
-		return chai.request(app)
+		return chai.request(api)
 		.post('/graphql')
 		.set('content-type', 'application/json')
 		.send({ query: 'query { hero(id: 4) { id } }' })
@@ -108,7 +107,7 @@ describe('query { hero(:id) }', () => {
 	})
 
 	it('should return Iron Man', () => {
-		return chai.request(app)
+		return chai.request(api)
 		.post('/graphql')
 		.set('content-type', 'application/json')
 		.send({ query: 'query { hero(id: 4) { id, name, powers } }' })
@@ -123,4 +122,6 @@ describe('query { hero(:id) }', () => {
 	})
 
 })
+
+
 

@@ -2,21 +2,24 @@
 import Channel from './Channel'
 
 export default class Video {
-	id: string
-	title: string
-	thumbnailURL: URL
-	channelID: number
-	description: string
-	publishDate: Date
+	id?: string
+	title?: string
+	thumbnailURL?: URL
+	channelID?: number
+	description?: string
+	publishDate?: Date
+	active?: boolean
 
-	constructor(id: string, title: string, thumbURL: URL, channelID: number,
-	            desc: string, pubDate: Date)
+	constructor(
+		{ id, title, thumbnailURL, channelID, description, publishDate }: Video,
+		active = false)
 	{
 		this.id = id
 		this.title = title
-		this.thumbnailURL = thumbURL
+		this.thumbnailURL = thumbnailURL
 		this.channelID = channelID
-		this.description = desc
-		this.publishDate = pubDate
+		this.description = description
+		this.publishDate = publishDate
+		this.active = active
 	}
 }

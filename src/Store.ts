@@ -13,19 +13,26 @@ import { snapshotStore } from './store/Snapshot'
  * Defined as abstract to allow exporting without allowing instantiation.
  */
 export abstract class Store {
-	connection: Sequelize.Sequelize
+	private _connection: Sequelize.Sequelize
 
-	constructor() {
-		this.connection = new Sequelize('postgres://localhost:5432/owl', {
+	public get connection(): Sequelize.Sequelize { return this._connection }
+
+	async initialize(host: string, port: number, database: string): Promise<any> {
+		const url = `postgres://${host}:${port}/${database}`
+		this._connection = new Sequelize(url, {
 			define: {
 				underscored: true
 			}
 		})
 
-		this.syncModels()
-			.catch(reason => {
-				console.error('Failed syncing models.', reason)
-			})
+		await this.connection.authenticate().catch(reason => {
+			console.error(`Failed connecting to database with ${url}.`, reason)
+		})
+
+		debug('Syncing models...')
+		await this.syncModels().catch(reason => {
+			console.error('Failed syncing models.', reason)
+		})
 
 		debug('Initialized.')
 	}

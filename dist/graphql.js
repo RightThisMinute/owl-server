@@ -1,8 +1,19 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphqlHTTP = require("express-graphql");
 const graphql_1 = require("graphql");
 const Hero_1 = require("./routes/Hero");
+const Video_1 = require("./store/Video");
+const createDebug = require("debug");
+const debug = createDebug('graphql');
 const schema = graphql_1.buildSchema(`
 	type Height {
 		ft: Int!
@@ -22,9 +33,13 @@ const schema = graphql_1.buildSchema(`
 	}
 
 	type Query {
-		hello: String!
 		heroes: [Hero]!
 		hero(id: Int!): Hero
+	}
+
+	type Mutation {
+		setActiveVideoIDs(ids: [String]!): [String]!
+		hello: String!
 	}
 `);
 class Hero {
@@ -53,6 +68,10 @@ const root = {
     hello: () => 'Hello, World!',
     heroes: () => Hero.getAll(),
     hero: ({ id }) => Hero.getBy(id),
+    setActiveVideoIDs: ({ ids }) => __awaiter(this, void 0, void 0, function* () {
+        yield Video_1.videoStore.setActive(ids);
+        return yield Video_1.videoStore.getActiveIDs();
+    })
 };
 exports.default = graphqlHTTP({
     schema,

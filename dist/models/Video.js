@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Video {
-    constructor(id, title, thumbURL, channelID, desc, pubDate) {
+    constructor({ id, title, thumbnailURL, channelID, description, publishDate }, active = false) {
         this.id = id;
         this.title = title;
-        this.thumbnailURL = thumbURL;
+        this.thumbnailURL = thumbnailURL;
         this.channelID = channelID;
-        this.description = desc;
-        this.publishDate = pubDate;
+        this.description = description;
+        this.publishDate = publishDate;
+        this.active = active;
     }
 }
 exports.default = Video;

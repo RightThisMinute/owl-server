@@ -1,8 +1,11 @@
 
 import * as graphqlHTTP from 'express-graphql'
-import {buildSchema} from 'graphql'
+import {buildSchema } from 'graphql'
 import { Heroes } from './routes/Hero'
-import { store } from './Store'
+import { videoStore } from './store/Video'
+
+import * as createDebug from 'debug'
+const debug = createDebug('graphql')
 
 const schema = buildSchema(`
 	type Height {
@@ -23,9 +26,13 @@ const schema = buildSchema(`
 	}
 
 	type Query {
-		hello: String!
 		heroes: [Hero]!
 		hero(id: Int!): Hero
+	}
+
+	type Mutation {
+		setActiveVideoIDs(ids: [String]!): [String]!
+		hello: String!
 	}
 `)
 
@@ -75,6 +82,11 @@ const root = {
 
 	heroes: () => Hero.getAll(),
 	hero: ({id}) => Hero.getBy(id),
+
+	setActiveVideoIDs: async ({ids}) => {
+		await videoStore.setActive(ids)
+		return await videoStore.getActiveIDs()
+	}
 }
 
 export default graphqlHTTP({

@@ -8,8 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const createDebug = require("debug");
+const debug = createDebug('Store');
 class Base {
     constructor(name, schema, options) {
+        debug(`Constructing store instance for table ${name}.`);
         this.name = name;
         this.schema = schema;
         this.options = options;
@@ -19,8 +22,10 @@ class Base {
     }
     syncModel(connection, force = false) {
         return __awaiter(this, void 0, void 0, function* () {
+            debug(`Defining ${this.name} model.`);
             this._model = connection.define(this.name, this.schema, this.options);
             yield this.model.sync({ force });
+            debug(`Synced ${this.name} model.`);
         });
     }
 }

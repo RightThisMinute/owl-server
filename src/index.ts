@@ -3,17 +3,20 @@ import * as http from 'http'
 import * as createDebug from 'debug'
 const debug = createDebug('index')
 
-import App from './App'
-
-debug('ts-express::server')
+import API from './API'
+import { store } from './Store'
 
 const port = normalizePort(process.env.PORT || 3000)
-App.set('port', port)
+API.set('port', port)
+const server = http.createServer(API)
 
-const server = http.createServer(App)
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
+async function main(): Promise<any> {
+	await store.initialize('localhost', 5432, 'owl')
+
+	server.listen(port)
+	server.on('error', onError)
+	server.on('listening', onListening)
+}
 
 function normalizePort(val: number|string): number|string|boolean {
 	let port: number = (typeof val === 'string') ? parseInt(val, 10) : val
@@ -44,3 +47,7 @@ function onListening(): void {
 	let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`
 	debug(`Listening on ${bind}`)
 }
+
+main()
+	.then(() => debug('Up and running.'))
+	.catch(reason => console.error('Failed to start.', reason))

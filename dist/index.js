@@ -1,16 +1,29 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const http = require("http");
 const createDebug = require("debug");
 const debug = createDebug('index');
-const App_1 = require("./App");
-debug('ts-express::server');
+const API_1 = require("./API");
+const Store_1 = require("./Store");
 const port = normalizePort(process.env.PORT || 3000);
-App_1.default.set('port', port);
-const server = http.createServer(App_1.default);
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+API_1.default.set('port', port);
+const server = http.createServer(API_1.default);
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield Store_1.store.initialize('localhost', 5432, 'owl');
+        server.listen(port);
+        server.on('error', onError);
+        server.on('listening', onListening);
+    });
+}
 function normalizePort(val) {
     let port = (typeof val === 'string') ? parseInt(val, 10) : val;
     if (isNaN(port))
@@ -42,3 +55,6 @@ function onListening() {
     let bind = (typeof addr === 'string') ? `pipe ${addr}` : `port ${addr.port}`;
     debug(`Listening on ${bind}`);
 }
+main()
+    .then(() => debug('Up and running.'))
+    .catch(reason => console.error('Failed to start.', reason));

@@ -6,18 +6,15 @@ import * as bodyParser from 'body-parser'
 
 import HeroRouter from './routes/Hero'
 import GraphQLRouter from './graphql'
-import { Store, store } from './Store'
 
 // Creates and configures an ExpressJS web server.
 class App {
 
 	// ref to Express instance
 	public express: express.Application
-	private store: Store
 
 	// Run configuration methods on Express instance
 	constructor() {
-		this.store = store
 		this.express = express()
 		this.middleware()
 		this.routes()

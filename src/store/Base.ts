@@ -1,5 +1,7 @@
 
 import * as S from 'sequelize'
+import * as createDebug from 'debug'
+const debug = createDebug('Store')
 
 abstract class Base<ModelType> {
 	protected name: string
@@ -14,17 +16,20 @@ abstract class Base<ModelType> {
 	constructor(name: string, schema: S.DefineAttributes,
 	            options?: S.DefineOptions<S.Instance<ModelType>>)
 	{
+		debug(`Constructing store instance for table ${name}.`)
 		this.name = name
 		this.schema = schema
 		this.options = options
 	}
 
 	async syncModel(connection: S.Sequelize, force = false): Promise<any> {
+		debug(`Defining ${this.name} model.`)
 		this._model = connection.define<S.Instance<ModelType>, ModelType>(
 			this.name, this.schema, this.options
 		)
 
 		await this.model.sync({ force })
+		debug(`Synced ${this.name} model.`)
 	}
 }
 
