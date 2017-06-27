@@ -19,7 +19,7 @@
     "@types/morgan": "^1.7.32",
     "@types/node": "^8.0.1",
     "@types/pg": "^6.1.41",
-    "@types/request": "^0.0.44",
+    "@types/request": "^0.0.45",
     "@types/request-promise-native": "^1.0.5",
     "@types/sequelize": "^4.0.61",
     "chai": "^4.0.2",
