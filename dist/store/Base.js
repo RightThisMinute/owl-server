@@ -28,5 +28,10 @@ class Base {
             debug(`Synced ${this.name} model.`);
         });
     }
+    deleteAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.model.destroy();
+        });
+    }
 }
 exports.default = Base;

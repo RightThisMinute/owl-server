@@ -3,6 +3,7 @@ import * as S from 'sequelize'
 import * as createDebug from 'debug'
 const debug = createDebug('Store')
 
+
 abstract class Base<ModelType> {
 	protected name: string
 	protected schema: S.DefineAttributes
@@ -22,7 +23,7 @@ abstract class Base<ModelType> {
 		this.options = options
 	}
 
-	async syncModel(connection: S.Sequelize, force = false): Promise<any> {
+	public async syncModel(connection: S.Sequelize, force = false): Promise<any> {
 		debug(`Defining ${this.name} model.`)
 		this._model = connection.define<S.Instance<ModelType>, ModelType>(
 			this.name, this.schema, this.options
@@ -30,6 +31,10 @@ abstract class Base<ModelType> {
 
 		await this.model.sync({ force })
 		debug(`Synced ${this.name} model.`)
+	}
+
+	public async deleteAll(): Promise<void> {
+		await this.model.destroy()
 	}
 }
 

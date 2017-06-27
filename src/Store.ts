@@ -6,18 +6,30 @@ import * as Sequelize from 'sequelize'
 import { channelStore } from './store/Channel'
 import { videoStore } from './store/Video'
 import { snapshotStore } from './store/Snapshot'
+import Base from './store/Base'
 
+
+type InitOptions = {
+	dropAndRecreateTables?: boolean,
+}
 
 
 /**
  * Defined as abstract to allow exporting without allowing instantiation.
  */
-export abstract class Store {
-	private _connection: Sequelize.Sequelize
+class Store {
 
+	public static get stores(): Base<any>[] {
+		return [channelStore, videoStore, snapshotStore]
+	}
+
+	private _connection: Sequelize.Sequelize
 	public get connection(): Sequelize.Sequelize { return this._connection }
 
-	async initialize(host: string, port: number, database: string): Promise<any> {
+
+	public async initialize(host: string, port: number, database: string,
+	                        options: InitOptions = {}): Promise<void>
+	{
 		const url = `postgres://${host}:${port}/${database}`
 		this._connection = new Sequelize(url, {
 			define: {
@@ -30,24 +42,21 @@ export abstract class Store {
 		})
 
 		debug('Syncing models...')
-		await this.syncModels().catch(reason => {
+		const force = options.dropAndRecreateTables || false
+		await this.syncModels(force).catch(reason => {
 			console.error('Failed syncing models.', reason)
 		})
 
 		debug('Initialized.')
 	}
 
-	async syncModels(force = false): Promise<any> {
-		const stores = [channelStore, videoStore, snapshotStore]
-
-		for (let sx = 0; sx < stores.length; sx++)
-			await stores[sx].syncModel(this.connection, force)
+	private async syncModels(force = false): Promise<void> {
+		for (let sx = 0; sx < Store.stores.length; sx++)
+			await Store.stores[sx].syncModel(this.connection, force)
 	}
 }
-
-class _Store extends Store {}
 
 
 // `export default` is not used because it would result in a new instance
 // being created on each import.
-export const store = new _Store()
+export const store = new Store()

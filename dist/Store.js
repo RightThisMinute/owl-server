@@ -18,8 +18,11 @@ const Snapshot_1 = require("./store/Snapshot");
  * Defined as abstract to allow exporting without allowing instantiation.
  */
 class Store {
+    static get stores() {
+        return [Channel_1.channelStore, Video_1.videoStore, Snapshot_1.snapshotStore];
+    }
     get connection() { return this._connection; }
-    initialize(host, port, database) {
+    initialize(host, port, database, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `postgres://${host}:${port}/${database}`;
             this._connection = new Sequelize(url, {
@@ -31,7 +34,8 @@ class Store {
                 console.error(`Failed connecting to database with ${url}.`, reason);
             });
             debug('Syncing models...');
-            yield this.syncModels().catch(reason => {
+            const force = options.dropAndRecreateTables || false;
+            yield this.syncModels(force).catch(reason => {
                 console.error('Failed syncing models.', reason);
             });
             debug('Initialized.');
@@ -39,15 +43,11 @@ class Store {
     }
     syncModels(force = false) {
         return __awaiter(this, void 0, void 0, function* () {
-            const stores = [Channel_1.channelStore, Video_1.videoStore, Snapshot_1.snapshotStore];
-            for (let sx = 0; sx < stores.length; sx++)
-                yield stores[sx].syncModel(this.connection, force);
+            for (let sx = 0; sx < Store.stores.length; sx++)
+                yield Store.stores[sx].syncModel(this.connection, force);
         });
     }
 }
-exports.Store = Store;
-class _Store extends Store {
-}
 // `export default` is not used because it would result in a new instance
 // being created on each import.
-exports.store = new _Store();
+exports.store = new Store();

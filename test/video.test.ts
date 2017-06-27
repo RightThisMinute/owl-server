@@ -11,7 +11,8 @@ chai.use(chaiHttp)
 const expect = chai.expect
 
 const storeInit = store.initialize(
-	config.database.host, config.database.port, config.database.name
+	config.testDatabase.host, config.testDatabase.port, config.testDatabase.name,
+	{ dropAndRecreateTables: true }
 )
 
 describe('mutation { setActiveVideoIDs(:ids) }', () => {
