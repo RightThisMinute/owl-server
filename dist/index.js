@@ -13,6 +13,7 @@ const createDebug = require("debug");
 const debug = createDebug('index');
 const API_1 = require("./API");
 const Config_1 = require("./Config");
+const Recorder_1 = require("./Recorder");
 const Store_1 = require("./Store");
 const port = normalizePort(process.env.PORT || Config_1.config.api.port);
 API_1.default.set('port', port);
@@ -23,6 +24,7 @@ function main() {
         server.listen(port);
         server.on('error', onError);
         server.on('listening', onListening);
+        Recorder_1.recorder.start(3 * 60 * 1000);
     });
 }
 function normalizePort(val) {

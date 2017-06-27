@@ -2,8 +2,8 @@
 import * as Sequelize from 'sequelize'
 
 import Base from './Base'
-import { videoStore } from './Video'
-import model from '../models/Snapshot'
+// import { videoStore } from './Video'
+import Snapshot from '../models/Snapshot'
 
 
 const ST = Sequelize
@@ -42,5 +42,17 @@ const schema = {
 }
 
 
-class Snapshot extends Base<model> {}
-export const snapshotStore = new Snapshot('snapshot', schema)
+class SnapshotStore extends Base<Snapshot> {
+
+	public async post(snapshots: Snapshot[]): Promise<void> {
+		await this.model.bulkCreate(snapshots)
+	}
+
+	public async getAll(): Promise<Snapshot[]> {
+		const snapshots = await this.model.findAll()
+		return snapshots.map(snapshot => snapshot.get())
+	}
+
+}
+
+export const snapshotStore = new SnapshotStore('snapshot', schema)

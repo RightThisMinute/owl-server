@@ -5,6 +5,7 @@ const debug = createDebug('index')
 
 import API from './API'
 import { config } from './Config'
+import { recorder } from './Recorder'
 import { store } from './Store'
 
 const port = normalizePort(process.env.PORT || config.api.port)
@@ -20,6 +21,8 @@ async function main(): Promise<any> {
 	server.listen(port)
 	server.on('error', onError)
 	server.on('listening', onListening)
+
+	recorder.start(3 * 60 * 1000)
 }
 
 

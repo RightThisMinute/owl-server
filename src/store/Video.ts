@@ -28,7 +28,15 @@ const schema = {
 
 class VideoStore extends Base<Video> {
 
-	async setActive(ids: string[]): Promise<any> {
+	public async patch(videos: Video[]): Promise<void> {
+		await Promise.all(videos.map(video => {
+			return this.model.update(video, {
+				where: { id: video.id }
+			})
+		}))
+	}
+
+	public async setActive(ids: string[]): Promise<any> {
 		const videos = ids.map(id => new Video({id}, true))
 
 		return store.connection.transaction(async transaction => {
@@ -43,13 +51,18 @@ class VideoStore extends Base<Video> {
 		})
 	}
 
-	async getActiveIDs(): Promise<string[]> {
+	public async getActiveIDs(): Promise<string[]> {
 		const videos = await this.model.findAll({
 			attributes: ['id'],
 			where: { active: true }
 		})
 
 		return videos.map(video => video.get('id'))
+	}
+
+	public async getActive(): Promise<Video[]> {
+		const vids = await this.model.findAll({ where: { active: true }})
+		return vids.map(vid => vid.get())
 	}
 
 }

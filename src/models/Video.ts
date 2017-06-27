@@ -4,8 +4,8 @@ import Channel from './Channel'
 export default class Video {
 	id?: string
 	title?: string
-	thumbnailURL?: URL
-	channelID?: number
+	thumbnailURL?: string
+	channelID?: string
 	description?: string
 	publishDate?: Date
 	active?: boolean

@@ -19,6 +19,8 @@
     "@types/morgan": "^1.7.32",
     "@types/node": "^8.0.1",
     "@types/pg": "^6.1.41",
+    "@types/request": "^0.0.44",
+    "@types/request-promise-native": "^1.0.5",
     "@types/sequelize": "^4.0.61",
     "chai": "^4.0.2",
     "chai-http": "^3.0.0",
@@ -38,6 +40,8 @@
     "morgan": "^1.8.2",
     "pg": "^6.3.0",
     "pg-hstore": "^2.3.2",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4",
     "sequelize": "^4.1.0"
   }
 }

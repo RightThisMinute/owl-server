@@ -27,6 +27,15 @@ const schema = {
     active: { type: ST.BOOLEAN, allowNull: false },
 };
 class VideoStore extends Base_1.default {
+    patch(videos) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield Promise.all(videos.map(video => {
+                return this.model.update(video, {
+                    where: { id: video.id }
+                });
+            }));
+        });
+    }
     setActive(ids) {
         return __awaiter(this, void 0, void 0, function* () {
             const videos = ids.map(id => new Video_1.default({ id }, true));
@@ -48,6 +57,12 @@ class VideoStore extends Base_1.default {
                 where: { active: true }
             });
             return videos.map(video => video.get('id'));
+        });
+    }
+    getActive() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const vids = yield this.model.findAll({ where: { active: true } });
+            return vids.map(vid => vid.get());
         });
     }
 }
