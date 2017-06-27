@@ -12,23 +12,23 @@ const schema = {
         field: 'created_at'
     },
     viewCount: {
-        type: ST.INTEGER, allowNull: false, defaultValue: 0,
+        type: ST.BIGINT, allowNull: false, defaultValue: 0,
         field: 'view_count'
     },
     likeCount: {
-        type: ST.INTEGER, allowNull: false, defaultValue: 0,
+        type: ST.BIGINT, allowNull: false, defaultValue: 0,
         field: 'like_count'
     },
     dislikeCount: {
-        type: ST.INTEGER, allowNull: false, defaultValue: 0,
+        type: ST.BIGINT, allowNull: false, defaultValue: 0,
         field: 'dislike_count'
     },
     favoriteCount: {
-        type: ST.INTEGER, allowNull: false, defaultValue: 0,
+        type: ST.BIGINT, allowNull: false, defaultValue: 0,
         field: 'favorite_count'
     },
     commentCount: {
-        type: ST.INTEGER, allowNull: false, defaultValue: 0,
+        type: ST.BIGINT, allowNull: false, defaultValue: 0,
         field: 'comment_count'
     },
 };
