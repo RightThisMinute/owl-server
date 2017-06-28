@@ -20,7 +20,7 @@ API_1.default.set('port', port);
 const server = http.createServer(API_1.default);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield Store_1.store.initialize(Config_1.config.database.host, Config_1.config.database.port, Config_1.config.database.name);
+        yield Store_1.store.initialize(Config_1.config.database.host, Config_1.config.database.port, Config_1.config.database.name, { dropAndRecreateTables: false });
         server.listen(port);
         server.on('error', onError);
         server.on('listening', onListening);

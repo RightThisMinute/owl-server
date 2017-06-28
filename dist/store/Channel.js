@@ -27,5 +27,10 @@ class ChannelStore extends Base_1.default {
             return channels.map(channel => channel.get());
         });
     }
+    getByID(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.model.findById(id)).get();
+        });
+    }
 }
 exports.channelStore = new ChannelStore('channel', schema);

@@ -4,6 +4,10 @@ import * as Sequelize from 'sequelize'
 import Base from './Base'
 // import { videoStore } from './Video'
 import Snapshot from '../models/Snapshot'
+import { Seconds } from '../types'
+
+import * as createDebug from 'debug'
+const debug = createDebug('store.snapshot')
 
 
 const ST = Sequelize
@@ -50,6 +54,22 @@ class SnapshotStore extends Base<Snapshot> {
 
 	public async getAll(): Promise<Snapshot[]> {
 		const snapshots = await this.model.findAll()
+		return snapshots.map(snapshot => snapshot.get())
+	}
+
+	public async getByVideoAndAge(vidID: string, age: Seconds):
+		Promise<Snapshot[]>
+	{
+		const datetime = new Date(Date.now() - (age * 1000))
+
+		const snapshots = await this.model.findAll({
+			where: {
+				videoID: vidID,
+				recordedAt: { $gte: datetime }
+			},
+			order: [['created_at', 'DESC']],
+		})
+
 		return snapshots.map(snapshot => snapshot.get())
 	}
 

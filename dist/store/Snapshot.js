@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Sequelize = require("sequelize");
 const Base_1 = require("./Base");
+const createDebug = require("debug");
+const debug = createDebug('store.snapshot');
 const ST = Sequelize;
 const schema = {
     videoID: {
@@ -49,6 +51,19 @@ class SnapshotStore extends Base_1.default {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             const snapshots = yield this.model.findAll();
+            return snapshots.map(snapshot => snapshot.get());
+        });
+    }
+    getByVideoAndAge(vidID, age) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const datetime = new Date(Date.now() - (age * 1000));
+            const snapshots = yield this.model.findAll({
+                where: {
+                    videoID: vidID,
+                    recordedAt: { $gte: datetime }
+                },
+                order: [['created_at', 'DESC']],
+            });
             return snapshots.map(snapshot => snapshot.get());
         });
     }

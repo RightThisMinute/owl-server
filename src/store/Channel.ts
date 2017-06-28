@@ -22,6 +22,10 @@ class ChannelStore extends Base<Channel> {
 		return channels.map(channel => channel.get())
 	}
 
+	public async getByID(id: string): Promise<Channel> {
+		return (await this.model.findById(id)).get()
+	}
+
 }
 
 export const channelStore = new ChannelStore('channel', schema)

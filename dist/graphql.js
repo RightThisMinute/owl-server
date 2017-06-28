@@ -10,68 +10,51 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphqlHTTP = require("express-graphql");
 const graphql_1 = require("graphql");
-const Hero_1 = require("./routes/Hero");
-const Video_1 = require("./store/Video");
+const Video_1 = require("./graphql/Video");
 const createDebug = require("debug");
 const debug = createDebug('graphql');
 const schema = graphql_1.buildSchema(`
-	type Height {
-		ft: Int!
-		in: Int!
+	type Video {
+		id: ID!
+		active: Boolean!
+		details: VideoDetails
+		statsByAge(seconds: Int!): [VideoStats]!
 	}
-
-	type Hero {
-		id: Int!
+	
+	type VideoDetails {
+		title: String!
+		description: String!
+		thumbnailURL: String!
+		publishedAt: String!
+		channel: Channel!
+	}
+	
+	type VideoStats {
+		videoID: ID!
+		recordedAt: String!
+		views: String!
+		likes: String!
+		dislikes: String!
+		favorites: String!
+		comments: String!
+	}
+	
+	type Channel {
+		id: ID!
 		name: String!
-		aliases: [String]
-		occupation: String
-		gender: String!
-		height: Height!
-		hair: String
-		eyes: String
-		powers: [String]!
 	}
 
 	type Query {
-		heroes: [Hero]!
-		hero(id: Int!): Hero
+		activeVideos: [Video]!
 	}
 
 	type Mutation {
-		setActiveVideos(ids: [String]!): [String]!
-		hello: String!
+		setActiveVideos(ids: [ID]!): [Video]!
 	}
 `);
-class Hero {
-    static getBy(id) {
-        const hero = Hero_1.Heroes.filter(hero => hero.id === id);
-        if (hero.length === 0)
-            return null;
-        return new Hero(hero[0]);
-    }
-    static getAll() {
-        return Hero_1.Heroes.map(hero => new Hero(hero));
-    }
-    constructor({ id, name, aliases, occupation, gender, height, hair, eyes, powers }) {
-        this.id = id;
-        this.name = name;
-        this.aliases = aliases;
-        this.occupation = occupation;
-        this.gender = gender;
-        this.height = height;
-        this.hair = hair;
-        this.eyes = eyes;
-        this.powers = powers;
-    }
-}
 const root = {
-    hello: () => 'Hello, World!',
-    heroes: () => Hero.getAll(),
-    hero: ({ id }) => Hero.getBy(id),
-    setActiveVideos: ({ ids }) => __awaiter(this, void 0, void 0, function* () {
-        yield Video_1.videoStore.setActive(ids);
-        return yield Video_1.videoStore.getActiveIDs();
-    })
+    activeVideos: () => __awaiter(this, void 0, void 0, function* () { return yield Video_1.default.getActive(); }),
+    setActiveVideos: ({ ids }) => __awaiter(this, void 0, void 0, function* () { return yield Video_1.default.setActive(ids); }),
 };
 exports.default = graphqlHTTP({
     schema,

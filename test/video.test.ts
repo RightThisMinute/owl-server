@@ -10,6 +10,9 @@ import { recorder } from '../src/Recorder'
 chai.use(chaiHTTP)
 const expect = chai.expect
 
+import * as createDebug from 'debug'
+const debug = createDebug('test.video')
+
 const VIDEOS = [
 	{ id: 'sB6HY8r983c', channel: 'UCORIeT1hk6tYBuntEXsguLg',
 		title: /Seven Nation Army/i, views: 16108609 },
@@ -26,7 +29,7 @@ before('initialize store', async () => {
 		{ dropAndRecreateTables: true }
 })
 
-describe('mutation { setActiveVideoIDs(:ids) }', () => {
+describe('mutation { setActiveVideos(:ids) }', () => {
 
 
 	it('should set and return IDs', async () => {
@@ -35,8 +38,8 @@ describe('mutation { setActiveVideoIDs(:ids) }', () => {
 			.set('content-type', 'application/json')
 			.send({
 				query: `
-					mutation SetActiveVideos($ids: [String]!) {
-						setActiveVideos(ids: $ids)
+					mutation SetActiveVideos($ids: [ID]!) {
+						setActiveVideos(ids: $ids) { id }
 					}
 				`,
 				variables: { ids: IDS }
@@ -48,7 +51,15 @@ describe('mutation { setActiveVideoIDs(:ids) }', () => {
 			.and.have.nested.property('data.setActiveVideos')
 		expect(res.body.data.setActiveVideos)
 			.to.be.an('array').of.length(IDS.length)
-			.and.to.have.members(IDS)
+
+		let storedIDs: number[] = []
+
+		res.body.data.setActiveVideos.forEach(vid => {
+			expect(vid).to.be.an('object').with.all.keys(['id'])
+			storedIDs.push(vid.id)
+		})
+		
+		expect(storedIDs).to.have.members(IDS)
 	})
 
 	it('should have set the active videos', async () => {
@@ -76,17 +87,15 @@ describe('mutation { setActiveVideoIDs(:ids) }', () => {
 
 describe('query { activeVideos }', () => {
 
-	let start: number
+	const start = Date.now()
 
 	before('record video stats', async () => {
-		start = Date.now()
-
 		await recorder.record()
 		await recorder.record()
 		await recorder.record()
 	})
 
-	it('should have set the active videos', async () => {
+	it('should have active videos with full details and stats', async () => {
 		const seconds = Math.ceil((Date.now() - start) / 1000)
 
 		const res = await chai.request(api)
@@ -100,7 +109,7 @@ describe('query { activeVideos }', () => {
 							title
 							channel { id }
 						}
-						stats(fromTheLast: $seconds) {
+						stats: statsByAge(seconds: $seconds) {
 							videoID
 							recordedAt
 							views
@@ -142,15 +151,12 @@ describe('query { activeVideos }', () => {
 			expect(vid.stats[0]).to.be.an('object')
 				.with.all.keys(['videoID', 'recordedAt', 'views'])
 
-			const stats = vid.stats.filter(stats => stats.videoID === vid.id)
-
-			expect(stats).to.be.an('array').of.length(3)
-
-			stats.forEach(stats => {
-				expect(stats.recordedAt)
-					.to.be.at.least(Math.floor(start/1000))
-					.but.lessThan(Math.ceil(start/1000) + seconds)
-				expect(vid.stats.views).to.be.at.least(expected.views)
+			vid.stats.forEach(stats => {
+				expect(Number(stats.recordedAt)).to.be.a('number')
+					.of.at.least(Math.floor(start))
+					.but.lessThan(Math.ceil(start) + (seconds * 1000))
+				expect(Number(stats.views)).to.be.a('number')
+					.of.at.least(expected.views)
 			})
 		})
 	})

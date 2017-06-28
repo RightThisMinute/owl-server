@@ -15,7 +15,8 @@ const server = http.createServer(API)
 
 async function main(): Promise<any> {
 	await store.initialize(
-		config.database.host, config.database.port, config.database.name
+		config.database.host, config.database.port, config.database.name,
+		{ dropAndRecreateTables: false }
 	)
 
 	server.listen(port)
