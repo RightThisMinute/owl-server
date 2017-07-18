@@ -28,7 +28,7 @@ function main() {
     });
 }
 function normalizePort(val) {
-    let port = (typeof val === 'string') ? parseInt(val, 10) : val;
+    const port = (typeof val === 'string') ? parseInt(val, 10) : val;
     if (isNaN(port))
         return val;
     else if (port >= 0)
@@ -39,7 +39,7 @@ function normalizePort(val) {
 function onError(error) {
     if (error.syscall !== 'listen')
         throw error;
-    let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
+    const bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
     switch (error.code) {
         case 'EACCES':
             console.error(`${bind} requires elevated privileges`);
