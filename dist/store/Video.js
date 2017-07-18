@@ -67,3 +67,4 @@ class VideoStore extends Base_1.default {
     }
 }
 exports.videoStore = new VideoStore('video', schema);
+//# sourceMappingURL=Video.js.map

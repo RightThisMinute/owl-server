@@ -13,3 +13,4 @@ class Snapshot {
     }
 }
 exports.default = Snapshot;
+//# sourceMappingURL=Snapshot.js.map

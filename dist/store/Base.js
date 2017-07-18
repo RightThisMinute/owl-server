@@ -35,3 +35,4 @@ class Base {
     }
 }
 exports.default = Base;
+//# sourceMappingURL=Base.js.map

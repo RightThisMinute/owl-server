@@ -34,3 +34,4 @@ class ChannelStore extends Base_1.default {
     }
 }
 exports.channelStore = new ChannelStore('channel', schema);
+//# sourceMappingURL=Channel.js.map

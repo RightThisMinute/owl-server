@@ -12,3 +12,4 @@ class Video {
     }
 }
 exports.default = Video;
+//# sourceMappingURL=Video.js.map

@@ -51,3 +51,4 @@ class Store {
 // `export default` is not used because it would result in a new instance
 // being created on each import.
 exports.store = new Store();
+//# sourceMappingURL=Store.js.map

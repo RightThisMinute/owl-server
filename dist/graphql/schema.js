@@ -40,3 +40,4 @@ exports.default = graphql_1.buildSchema(`
 		setActiveVideos(ids: [ID]!): [Video]!
 	}
 `);
+//# sourceMappingURL=schema.js.map

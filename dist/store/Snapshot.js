@@ -69,3 +69,4 @@ class SnapshotStore extends Base_1.default {
     }
 }
 exports.snapshotStore = new SnapshotStore('snapshot', schema);
+//# sourceMappingURL=Snapshot.js.map

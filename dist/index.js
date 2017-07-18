@@ -61,3 +61,4 @@ function onListening() {
 main()
     .then(() => debug('Up and running.'))
     .catch(reason => console.error('Failed to start.', reason));
+//# sourceMappingURL=index.js.map

@@ -22,3 +22,4 @@ exports.default = graphqlHTTP({
     rootValue: root,
     graphiql: true,
 });
+//# sourceMappingURL=graphql.js.map

@@ -78,3 +78,4 @@ class VideoStats {
         return stats;
     }
 }
+//# sourceMappingURL=Video.js.map
