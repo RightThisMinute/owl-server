@@ -4,9 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -r dist data/*.*",
-    "build": "npm run clean && npm run update-schema && tsc --pretty",
+    "clean": "rm -r dist data/schema.*",
+    "build": "npm run update-schema && tsc --pretty",
     "start": "node dist/index.js",
+    "debug": "npm run build && node --inspect=9230 dist/index.js",
     "test": "mocha --reporter spec --compilers ts:ts-node/register 'test/**/*.test.ts'",
     "update-schema": "ts-node tools/updateSchema.ts"
   },
