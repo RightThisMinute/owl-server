@@ -2,6 +2,7 @@
 import * as yamlConfig from 'config-yaml'
 
 interface Config {
+
 	api: {
 		port: number
 	}
@@ -18,9 +19,21 @@ interface Config {
 		name: string,
 	}
 
+	cors: {
+		originPatterns: RegExp[]
+	}
+
 	youtube: {
 		key: string
 	}
+
 }
 
-export const config: Config = yamlConfig(`${__dirname}/../config.yaml`)
+let conf: Config = yamlConfig(`${__dirname}/../config.yaml`)
+
+if (conf.cors && conf.cors.originPatterns instanceof Array)
+	conf.cors.originPatterns = conf.cors.originPatterns.map(pattern => {
+		return new RegExp(pattern, 'i')
+	})
+
+export const config: Config = conf

@@ -12,5 +12,10 @@ testDatabase: # Optional
   port: 5432
   name: owl.test
 
+cors:
+  originPatterns:
+    - '^http://localhost(:\d*)?($|/)'
+    - '^https://example.com($|/)'
+
 youtube:
   key: API KEY HERE

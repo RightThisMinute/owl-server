@@ -1,8 +1,10 @@
 
-import * as express from 'express'
-import * as logger from 'morgan'
 import * as bodyParser from 'body-parser'
+import * as express from 'express'
+import { some } from 'lodash'
+import * as logger from 'morgan'
 
+import { config } from './Config'
 import GraphQLRouter from './graphql'
 
 // Creates and configures an ExpressJS web server.
@@ -23,6 +25,7 @@ class App {
 		this.express.use(logger('dev'))
 		this.express.use(bodyParser.json())
 		this.express.use(bodyParser.urlencoded({extended: false}))
+		this.express.use(corsMiddleware)
 	}
 
 	// Configure API endpoints.
@@ -38,11 +41,39 @@ class App {
 			})
 		})
 
+		router.options('/graphql', (req, res, next) => {
+			res.end()
+		})
+
 		this.express.use('/', router)
 		this.express.use('/graphql', GraphQLRouter)
 	}
 
 }
+
+function corsMiddleware(req, res, next): void {
+	const origin = req.header('origin')
+
+	if (!origin || !config.cors || !config.cors.originPatterns) {
+		next()
+		return
+	}
+
+	const matched = some(config.cors.originPatterns, (pattern) => {
+		return pattern.test(origin)
+	})
+
+	if (matched) {
+		res.header('Access-Control-Allow-Origin', origin)
+		res.header('Access-Control-Allow-Method',
+		           req.header('Access-Control-Request-Method'))
+		res.header('Access-Control-Allow-Headers',
+		           req.header('Access-Control-Request-Headers'))
+	}
+
+	next()
+}
+
 
 export default new App().express
 
