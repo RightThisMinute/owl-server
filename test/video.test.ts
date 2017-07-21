@@ -3,7 +3,7 @@ import * as chai from 'chai'
 import chaiHTTP = require('chai-http')
 
 import api from '../src/API'
-import { config } from '../src/Config'
+import { config } from '../src/config'
 import { store } from '../src/Store'
 import { recorder } from '../src/Recorder'
 

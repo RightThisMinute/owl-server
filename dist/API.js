@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const lodash_1 = require("lodash");
 const logger = require("morgan");
-const Config_1 = require("./Config");
+const config_1 = require("./config");
 const graphql_1 = require("./graphql");
 // Creates and configures an ExpressJS web server.
 class App {
@@ -42,11 +42,11 @@ class App {
 }
 function corsMiddleware(req, res, next) {
     const origin = req.header('origin');
-    if (!origin || !Config_1.config.cors || !Config_1.config.cors.originPatterns) {
+    if (!origin || !config_1.config.cors || !config_1.config.cors.originPatterns) {
         next();
         return;
     }
-    const matched = lodash_1.some(Config_1.config.cors.originPatterns, (pattern) => {
+    const matched = lodash_1.some(config_1.config.cors.originPatterns, (pattern) => {
         return pattern.test(origin);
     });
     if (matched) {

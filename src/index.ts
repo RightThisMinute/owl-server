@@ -4,7 +4,7 @@ import * as createDebug from 'debug'
 const debug = createDebug('index')
 
 import API from './API'
-import { config } from './Config'
+import { config } from './config'
 import { recorder } from './Recorder'
 import { store } from './Store'
 

@@ -1,7 +1,7 @@
 
 import { expect } from 'chai'
 
-import { config } from '../src/Config'
+import { config } from '../src/config'
 import { recorder } from '../src/Recorder'
 import { store } from '../src/Store'
 import { videoStore } from '../src/store/Video'

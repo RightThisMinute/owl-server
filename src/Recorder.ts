@@ -2,7 +2,7 @@
 import Timer = NodeJS.Timer
 import * as request from 'request-promise-native'
 
-import { config } from './Config'
+import { config } from './config'
 
 import Channel from './models/Channel'
 import { channelStore } from './store/Channel'

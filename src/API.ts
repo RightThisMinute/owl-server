@@ -4,7 +4,7 @@ import * as express from 'express'
 import { some } from 'lodash'
 import * as logger from 'morgan'
 
-import { config } from './Config'
+import { config } from './config'
 import GraphQLRouter from './graphql'
 
 // Creates and configures an ExpressJS web server.

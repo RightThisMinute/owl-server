@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const request = require("request-promise-native");
-const Config_1 = require("./Config");
+const config_1 = require("./config");
 const Channel_1 = require("./models/Channel");
 const Channel_2 = require("./store/Channel");
 const Snapshot_1 = require("./models/Snapshot");
@@ -47,7 +47,7 @@ class Recorder {
             const uri = 'https://www.googleapis.com/youtube/v3/videos'
                 + '?part=snippet,statistics'
                 + `&id=${ids.join(',')}`
-                + `&key=${Config_1.config.youtube.key}`;
+                + `&key=${config_1.config.youtube.key}`;
             const response = yield request({ uri, json: true }).catch(reason => {
                 console.error('Failed requesting video details from YouTube.', uri, reason);
             });

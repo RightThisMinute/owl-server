@@ -12,15 +12,15 @@ const http = require("http");
 const createDebug = require("debug");
 const debug = createDebug('index');
 const API_1 = require("./API");
-const Config_1 = require("./Config");
+const config_1 = require("./config");
 const Recorder_1 = require("./Recorder");
 const Store_1 = require("./Store");
-const port = normalizePort(process.env.PORT || Config_1.config.api.port);
+const port = normalizePort(process.env.PORT || config_1.config.api.port);
 API_1.default.set('port', port);
 const server = http.createServer(API_1.default);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield Store_1.store.initialize(Config_1.config.database.host, Config_1.config.database.port, Config_1.config.database.name, { dropAndRecreateTables: false });
+        yield Store_1.store.initialize(config_1.config.database.host, config_1.config.database.port, config_1.config.database.name, { dropAndRecreateTables: false });
         server.listen(port);
         server.on('error', onError);
         server.on('listening', onListening);

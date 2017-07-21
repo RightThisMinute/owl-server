@@ -7,4 +7,4 @@ if (conf.cors && conf.cors.originPatterns instanceof Array)
         return new RegExp(pattern, 'i');
     });
 exports.config = conf;
-//# sourceMappingURL=Config.js.map
+//# sourceMappingURL=config.js.map
