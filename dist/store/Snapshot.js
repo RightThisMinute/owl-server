@@ -62,7 +62,7 @@ class SnapshotStore extends Base_1.default {
                     videoID: vidID,
                     recordedAt: { $gte: datetime }
                 },
-                order: [['created_at', 'DESC']],
+                order: [['created_at', 'ASC']],
             });
             return snapshots.map(snapshot => snapshot.get());
         });

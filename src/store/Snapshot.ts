@@ -67,7 +67,7 @@ class SnapshotStore extends Base<Snapshot> {
 				videoID: vidID,
 				recordedAt: { $gte: datetime }
 			},
-			order: [['created_at', 'DESC']],
+			order: [['created_at', 'ASC']],
 		})
 
 		return snapshots.map(snapshot => snapshot.get())
