@@ -36,8 +36,17 @@ export default buildSchema(`
 	type Query {
 		activeVideos: [Video]!
 	}
+	
+	input SetActiveVideosInput {
+		ids: [ID]!
+		clientMutationId: String!
+	}
+	
+	type SetActiveVideosPayload {
+		clientMutationId: String!
+	}
 
 	type Mutation {
-		setActiveVideos(ids: [ID]!): [Video]!
+		setActiveVideos(input: SetActiveVideosInput!): SetActiveVideosPayload
 	}
 `)

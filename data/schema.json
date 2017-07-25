@@ -437,24 +437,43 @@
               "description": "",
               "args": [
                 {
-                  "name": "ids",
+                  "name": "input",
                   "description": "",
                   "type": {
                     "kind": "NON_NULL",
                     "name": null,
                     "ofType": {
-                      "kind": "LIST",
-                      "name": null,
-                      "ofType": {
-                        "kind": "SCALAR",
-                        "name": "ID",
-                        "ofType": null
-                      }
+                      "kind": "INPUT_OBJECT",
+                      "name": "SetActiveVideosInput",
+                      "ofType": null
                     }
                   },
                   "defaultValue": null
                 }
               ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "SetActiveVideosPayload",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "SetActiveVideosInput",
+          "description": "",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "ids",
+              "description": "",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -462,10 +481,49 @@
                   "kind": "LIST",
                   "name": null,
                   "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Video",
+                    "kind": "SCALAR",
+                    "name": "ID",
                     "ofType": null
                   }
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "clientMutationId",
+              "description": "",
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "SetActiveVideosPayload",
+          "description": "",
+          "fields": [
+            {
+              "name": "clientMutationId",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 }
               },
               "isDeprecated": false,

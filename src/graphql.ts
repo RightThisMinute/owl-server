@@ -9,9 +9,17 @@ import * as createDebug from 'debug'
 const debug = createDebug('graphql')
 
 
+export interface SetActiveVideosInput {
+	ids: string[],
+	clientMutationId: string
+}
+
 const root = {
 	activeVideos: async () => await Video.getActive(),
-	setActiveVideos: async ({ids}) => await Video.setActive(ids),
+	setActiveVideos: async ({ input }: { input: SetActiveVideosInput }) => {
+		await Video.setActive(input.ids)
+		return { clientMutationId: input.clientMutationId }
+	},
 }
 
 export default graphqlHTTP({

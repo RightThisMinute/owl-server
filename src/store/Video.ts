@@ -36,7 +36,7 @@ class VideoStore extends Base<Video> {
 		}))
 	}
 
-	public async setActive(ids: string[]): Promise<any> {
+	public async setActive(ids: string[]): Promise<void> {
 		const videos = ids.map(id => new Video({id}, true))
 
 		return store.connection.transaction(async transaction => {

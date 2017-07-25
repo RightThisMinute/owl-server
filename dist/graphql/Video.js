@@ -17,7 +17,6 @@ class GQLVideo {
     static setActive(ids) {
         return __awaiter(this, void 0, void 0, function* () {
             yield Video_1.videoStore.setActive(ids);
-            return yield this.getActive();
         });
     }
     static getActive() {

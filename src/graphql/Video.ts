@@ -12,9 +12,8 @@ const debug = createDebug('graphql.Video')
 
 export default class GQLVideo {
 
-	public static async setActive(ids: string[]): Promise<GQLVideo[]> {
+	public static async setActive(ids: string[]): Promise<void> {
 		await videoStore.setActive(ids)
-		return await this.getActive()
 	}
 
 	public static async getActive(): Promise<GQLVideo[]> {

@@ -15,7 +15,10 @@ const createDebug = require("debug");
 const debug = createDebug('graphql');
 const root = {
     activeVideos: () => __awaiter(this, void 0, void 0, function* () { return yield Video_1.default.getActive(); }),
-    setActiveVideos: ({ ids }) => __awaiter(this, void 0, void 0, function* () { return yield Video_1.default.setActive(ids); }),
+    setActiveVideos: ({ input }) => __awaiter(this, void 0, void 0, function* () {
+        yield Video_1.default.setActive(input.ids);
+        return { clientMutationId: input.clientMutationId };
+    }),
 };
 exports.default = graphqlHTTP({
     schema: schema_1.default,

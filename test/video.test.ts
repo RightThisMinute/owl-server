@@ -1,10 +1,10 @@
 
 import * as chai from 'chai'
+import * as uuid from 'uuid/v4'
 import chaiHTTP = require('chai-http')
 
 import api from '../src/API'
 import { config } from '../src/config'
-import { store } from '../src/Store'
 import { recorder } from '../src/Recorder'
 
 chai.use(chaiHTTP)
@@ -29,37 +29,32 @@ before('initialize store', async () => {
 		{ dropAndRecreateTables: true }
 })
 
-describe('mutation { setActiveVideos(:ids) }', () => {
+describe('mutation { setActiveVideos(:input) }', () => {
 
+	it('should set IDs and return client mutation ID', async () => {
+		const clientMutationId = uuid()
 
-	it('should set and return IDs', async () => {
 		const res = await chai.request(api)
 			.post('/graphql')
 			.set('content-type', 'application/json')
 			.send({
 				query: `
-					mutation SetActiveVideos($ids: [ID]!) {
-						setActiveVideos(ids: $ids) { id }
+					mutation SetActiveVideos($input: SetActiveVideosInput!) {
+						setActiveVideos(input: $input) { clientMutationId }
 					}
 				`,
-				variables: { ids: IDS }
+				variables: { input: {
+					ids: IDS,
+					clientMutationId
+				} }
 			})
 
 		expect(res.status).to.equal(200)
 		expect(res).to.be.json
 		expect(res.body).to.be.an('object')
-			.and.have.nested.property('data.setActiveVideos')
-		expect(res.body.data.setActiveVideos)
-			.to.be.an('array').of.length(IDS.length)
-
-		let storedIDs: number[] = []
-
-		res.body.data.setActiveVideos.forEach(vid => {
-			expect(vid).to.be.an('object').with.all.keys(['id'])
-			storedIDs.push(vid.id)
-		})
-		
-		expect(storedIDs).to.have.members(IDS)
+			.and.have.nested.property('data.setActiveVideos.clientMutationId')
+		expect(res.body.data.setActiveVideos.clientMutationId)
+			.to.equal(clientMutationId)
 	})
 
 	it('should have set the active videos', async () => {

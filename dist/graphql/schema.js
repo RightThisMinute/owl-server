@@ -35,9 +35,18 @@ exports.default = graphql_1.buildSchema(`
 	type Query {
 		activeVideos: [Video]!
 	}
+	
+	input SetActiveVideosInput {
+		ids: [ID]!
+		clientMutationId: String!
+	}
+	
+	type SetActiveVideosPayload {
+		clientMutationId: String!
+	}
 
 	type Mutation {
-		setActiveVideos(ids: [ID]!): [Video]!
+		setActiveVideos(input: SetActiveVideosInput!): SetActiveVideosPayload
 	}
 `);
 //# sourceMappingURL=schema.js.map
