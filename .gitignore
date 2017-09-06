@@ -1,6 +1,8 @@
 
 config.*yaml
 !config.example.yaml
+dist
+data/schema.*
 
 ## From https://github.com/github/gitignore/blob/master/Global/JetBrains
 .gitignore ##
