@@ -6,6 +6,8 @@ database:
   host: localhost
   port: 5432
   name: owl # Database name
+  user: owl # User name (optional)
+  password: goomba # (optional)
 
 testDatabase: # Optional
   host: localhost
