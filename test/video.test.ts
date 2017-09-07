@@ -6,6 +6,7 @@ import chaiHTTP = require('chai-http')
 import api from '../src/API'
 import { config } from '../src/config'
 import { recorder } from '../src/Recorder'
+import { store } from '../src/Store'
 
 chai.use(chaiHTTP)
 const expect = chai.expect
@@ -25,8 +26,8 @@ const VIDEOS = [
 const IDS = VIDEOS.map(vid => vid.id)
 
 before('initialize store', async () => {
-	config.testDatabase.host, config.testDatabase.port, config.testDatabase.name,
-		{ dropAndRecreateTables: true }
+	await store.initialize(config.testDatabase,
+	                       { dropAndRecreateTables: true })
 })
 
 describe('mutation { setActiveVideos(:input) }', () => {

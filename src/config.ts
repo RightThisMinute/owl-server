@@ -7,17 +7,8 @@ interface Config {
 		port: number
 	}
 
-	database: {
-		host: string,
-		port: number,
-		name: string,
-	}
-
-	testDatabase?: {
-		host: string,
-		port: number,
-		name: string,
-	}
+	database: DatabaseConfig
+	testDatabase?: DatabaseConfig
 
 	cors: {
 		originPatterns: RegExp[]
@@ -27,6 +18,14 @@ interface Config {
 		key: string
 	}
 
+}
+
+export interface DatabaseConfig {
+	host: string
+	port: number
+	name: string
+	user?: string
+	password?: string
 }
 
 let conf: Config = yamlConfig(`${__dirname}/../config.yaml`)

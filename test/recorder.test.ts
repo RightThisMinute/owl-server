@@ -23,10 +23,8 @@ const VIDEOS = [
 
 
 async function initStore(): Promise<void> {
-	await store.initialize(
-		config.testDatabase.host, config.testDatabase.port, config.testDatabase.name,
-		{ dropAndRecreateTables: true }
-	)
+	await store.initialize(config.testDatabase,
+	                       { dropAndRecreateTables: true })
 
 	const ids = VIDEOS.map(vid => vid.id)
 	await videoStore.setActive(ids)

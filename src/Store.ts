@@ -3,6 +3,7 @@ import * as createDebug from 'debug'
 const debug = createDebug('Store')
 import * as Sequelize from 'sequelize'
 
+import { DatabaseConfig } from './config'
 import { channelStore } from './store/Channel'
 import { videoStore } from './store/Video'
 import { snapshotStore } from './store/Snapshot'
@@ -27,10 +28,13 @@ class Store {
 	public get connection(): Sequelize.Sequelize { return this._connection }
 
 
-	public async initialize(host: string, port: number, database: string,
+	public async initialize(config: DatabaseConfig,
 	                        options: InitOptions = {}): Promise<void>
 	{
-		const url = `postgres://${host}:${port}/${database}`
+		const { host, port, name, user, password } = config
+		const userString = user !== undefined ? `${user}:${password || ''}@` : ''
+
+		const url = `postgres://${userString}${host}:${port}/${name}`
 		this._connection = new Sequelize(url, {
 			define: {
 				underscored: true
